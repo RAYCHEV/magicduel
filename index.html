@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizard Duel Arena</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="card">
+                <h1>🧙‍♂️ Wizard Duel Arena 🧙‍♂️</h1>
+                <p>Epic magical battle between Harry Potter and Voldemort</p>
+                
+                <div class="instructions">
+                    <div class="instruction-box">
+                        <div class="instruction-title">🏆 How to Play</div>
+                        <div class="instruction-content">
+                            <div>• Cast spells to damage your opponent</div>
+                            <div>• Avoid enemy spells by moving around</div>
+                            <div>• Spells neutralize each other when they collide</div>
+                            <div>• Max 5 spells on field per player at once</div>
+                            <div>• First wizard to lose all health loses!</div>
+                        </div>
+                    </div>
+                    
+                    <div class="players-info">
+                        <div class="player-info player1">
+                            <div class="player-name">Player 1</div>
+                            <div>Harry Potter</div>
+                            <div class="controls">WASD + SPACE</div>
+                        </div>
+                        <div class="player-info player2">
+                            <div class="player-name">Player 2</div>
+                            <div>Voldemort</div>
+                            <div class="controls">Arrow Keys + ENTER</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="startBtn" class="start-btn">Start Duel (Press SPACE)</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Game UI -->
+            <div class="game-ui">
+                <div class="health-bars">
+                    <div class="health-bar player1">
+                        <div class="player-label">Harry Potter</div>
+                        <div class="health-bar-bg">
+                            <div id="health1" class="health-fill"></div>
+                        </div>
+                        <div id="healthText1" class="health-text">100/100</div>
+                        <div id="spellCount1" class="spell-count">Spells: 0/5</div>
+                    </div>
+                    
+                    <button id="muteBtn" class="mute-btn">🔊</button>
+                    
+                    <div class="health-bar player2">
+                        <div class="player-label">Voldemort</div>
+                        <div class="health-bar-bg">
+                            <div id="health2" class="health-fill"></div>
+                        </div>
+                        <div id="healthText2" class="health-text">100/100</div>
+                        <div id="spellCount2" class="spell-count">Spells: 0/5</div>
+                    </div>
+                </div>
+                
+                <div class="controls-help">
+                    <div class="control-group">
+                        <div class="control-title">Player 1 (Harry)</div>
+                        <div>Movement: WASD</div>
+                        <div>Cast Spell: SPACE</div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-title">Player 2 (Voldemort)</div>
+                        <div>Movement: Arrow Keys</div>
+                        <div>Cast Spell: ENTER</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen">
+            <div class="card">
+                <h1>🏆 Game Over 🏆</h1>
+                
+                <div class="winner-display">
+                    <div id="winnerEmoji" class="winner-emoji">⚡</div>
+                    <div id="winnerName" class="winner-name">Harry Potter Wins!</div>
+                    <div class="winner-subtitle">Victory through magical supremacy</div>
+                </div>
+
+                <div class="winner-message">
+                    <div id="winnerMessage">The Boy Who Lived proves his magical prowess once again!</div>
+                </div>
+
+                <button id="restartBtn" class="start-btn">Play Again (Press R)</button>
+                <div class="restart-hint">Press R to restart or click the button above</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
