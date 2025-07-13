@@ -187,6 +187,12 @@ function initGame() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     
+    // Force initial canvas size before resizing
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    
     resizeCanvas();
     
     // Initialize wizards
@@ -202,12 +208,23 @@ function initGame() {
     document.getElementById('startBtn').addEventListener('click', startGame);
     document.getElementById('restartBtn').addEventListener('click', startGame);
     document.getElementById('muteBtn').addEventListener('click', toggleMute);
+    
+    // Start rendering loop immediately to fix blue screen
+    requestAnimationFrame(gameLoop);
 }
 
 function resizeCanvas() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    // Get viewport dimensions for full screen canvas
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // Set canvas resolution to match display size
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Also set CSS size to ensure proper display
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
     
     if (wizard1 && wizard2) {
         wizard1.x = 100;
@@ -457,22 +474,25 @@ function render() {
     // Draw magical background effects
     drawBackground();
     
-    // Draw center divider
-    ctx.strokeStyle = "#4B5563";
-    ctx.lineWidth = 2;
-    ctx.setLineDash([10, 10]);
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, 0);
-    ctx.lineTo(canvas.width / 2, canvas.height);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    
-    // Draw spells
-    spells.forEach(spell => spell.render(ctx));
-    
-    // Draw wizards
-    wizard1.render(ctx);
-    wizard2.render(ctx);
+    // Only draw game elements if wizards are initialized
+    if (wizard1 && wizard2) {
+        // Draw center divider
+        ctx.strokeStyle = "#4B5563";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([10, 10]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Draw spells
+        spells.forEach(spell => spell.render(ctx));
+        
+        // Draw wizards
+        wizard1.render(ctx);
+        wizard2.render(ctx);
+    }
 }
 
 function drawBackground() {
@@ -492,12 +512,17 @@ function drawBackground() {
 }
 
 function gameLoop() {
-    if (gameState !== "playing") return;
+    // Always render, even when not playing to avoid blue screen
+    if (gameState === "playing") {
+        updateWizards();
+        updateSpells();
+        checkCollisions();
+    }
     
-    updateWizards();
-    updateSpells();
-    checkCollisions();
-    render();
+    // Always render to prevent blue screen
+    if (canvas && ctx) {
+        render();
+    }
     
     requestAnimationFrame(gameLoop);
 }
@@ -604,4 +629,16 @@ function playNeutralizationSound() {
 }
 
 // Initialize the game when page loads
-window.addEventListener('load', initGame);
+window.addEventListener('load', function() {
+    // Add small delay to ensure DOM is fully ready
+    setTimeout(initGame, 100);
+});
+
+// Backup initialization if load event doesn't fire
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        if (!canvas) {
+            initGame();
+        }
+    }, 200);
+});
