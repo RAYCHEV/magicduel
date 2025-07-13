@@ -41,6 +41,15 @@
                 </div>
 
                 <button id="startBtn" class="start-btn">Start Duel (Press SPACE)</button>
+                
+                <!-- Support Button -->
+                <div class="support-section">
+                    <button id="supportBtn" class="support-btn">
+                        <span class="support-emoji">☕</span>
+                        <span class="support-text">Support me & request features</span>
+                    </button>
+                    <div class="support-hint">Help improve the game with your support</div>
+                </div>
             </div>
         </div>
 
@@ -109,5 +118,17 @@
     </div>
 
     <script src="game.js"></script>
+    <script>
+        // Custom support button handler - direct Ko-fi link
+        document.addEventListener('DOMContentLoaded', function() {
+            const supportBtn = document.getElementById('supportBtn');
+            if (supportBtn) {
+                supportBtn.addEventListener('click', function() {
+                    // Open Ko-fi page directly in new window
+                    window.open('https://ko-fi.com/thexcoder', '_blank', 'width=600,height=700,scrollbars=yes,resizable=yes');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
